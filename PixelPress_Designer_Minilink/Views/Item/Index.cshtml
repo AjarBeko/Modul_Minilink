@@ -1,0 +1,51 @@
+﻿@inherits DotNetNuke.Web.Mvc.Framework.DnnWebViewPage<IEnumerable< PixelPress_Designer_MinilinkPixelPress_Designer_Minilink.Models.Item >>
+
+@using System.Text.RegularExpressions
+@using DotNetNuke.Web.Mvc.Helpers
+
+
+<div id="Items-@Dnn.ModuleContext.ModuleId">
+    <div id="minilink_main_container">
+        <a id="linkImage"><img id="designerBannerImage" /></a>
+    </div>
+</div>
+
+
+<script type="text/javascript">
+
+    let baseURL = extractBaseUrl();
+    function extractBaseUrl() {
+        let slashCount = 0;
+        for (let i = 0; i < document.baseURI.length; i++) {
+            if (document.baseURI[i] === "/") {
+                slashCount++;
+            }
+            if (slashCount === 3) {
+                return document.baseURI.substring(0, i + 1);
+            }
+        }
+        return null;
+    }
+    var idokapu = setInterval(() => {
+        if (document.getElementById("hcSku") && document.getElementsByTagName("h1").length > 0) {
+            if (document.getElementsByTagName("h1")[0].innerHTML.startsWith("Designterv") == false && document.getElementById("hcSku").innerHTML != "ppak-0001" ) { //ppak-0001: ajándékkártya cikkszáma, ezt a terméket nem akarjuk designolni :)
+                document.getElementById("designerBannerImage").src = baseURL + "Portals/0/Images/" + "minilink_banner.jpg" //alsó bannerkép beállítása
+                let sajathref = baseURL + "Designer/" + document.getElementById("hcSku").innerHTML
+                document.getElementById("linkImage").href = sajathref //hivatkozás hozzáadása
+
+                let mainnode = document.createElement("a")
+                mainnode.setAttribute("id", "main_node")
+                mainnode.setAttribute("href", sajathref)
+
+                let node = document.createElement("input")
+                node.setAttribute("type", "button")
+                node.setAttribute("class", "btn btn-default")
+                node.setAttribute("value", "Megtervezem!")
+                document.getElementById("hcProductActions").appendChild(mainnode);
+                document.getElementById("main_node").appendChild(node);
+                clearInterval(idokapu);
+            }
+        }
+    }, 100);
+
+</script>
